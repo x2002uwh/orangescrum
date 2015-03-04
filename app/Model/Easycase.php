@@ -556,7 +556,11 @@ class Easycase extends AppModel {
                 $rplyFilesArr[$fkey]['CaseFile']['is_ImgFileExt'] = $frmt->validateImgFileExt($caseFileName);
 
                 if($rplyFilesArr[$fkey]['CaseFile']['is_ImgFileExt']) {
-                    $rplyFilesArr[$fkey]['CaseFile']['fileurl'] = $frmt->generateTemporaryURL(DIR_CASE_FILES_S3.$caseFileName);
+                    if(USE_S3 == 0){
+			$rplyFilesArr[$fkey]['CaseFile']['fileurl'] = HTTP_CASE_FILES.$caseFileName;
+		    }else{
+			$rplyFilesArr[$fkey]['CaseFile']['fileurl'] = $frmt->generateTemporaryURL(DIR_CASE_FILES_S3.$caseFileName);
+		    } 
                 }
 
                 //$rplyFilesArr[$fkey]['CaseFile']['file_shname'] = $frmt->shortLength($caseFileName,37);
@@ -762,7 +766,11 @@ class Easycase extends AppModel {
                     $filesArr[$fkey]['CaseFile']['format_file'] = substr(strrchr(strtolower($caseFileName), "."), 1); //str_replace(array('"','\''), array('\'','"'), $frmt->imageType($caseFileName,25,10,1));
                     $filesArr[$fkey]['CaseFile']['is_ImgFileExt'] = $frmt->validateImgFileExt($caseFileName);
                     if($filesArr[$fkey]['CaseFile']['is_ImgFileExt']) {
-                        $filesArr[$fkey]['CaseFile']['fileurl'] = $frmt->generateTemporaryURL(DIR_CASE_FILES_S3.$caseFileName);
+                        if(USE_S3 == 0){
+			    $filesArr[$fkey]['CaseFile']['fileurl'] = HTTP_CASE_FILES.$caseFileName;
+			}else{
+			    $filesArr[$fkey]['CaseFile']['fileurl'] = $frmt->generateTemporaryURL(DIR_CASE_FILES_S3.$caseFileName);
+			} 
                     }
                     $filesArr[$fkey]['CaseFile']['file_size'] = $frmt->getFileSize($getFiles['CaseFile']['file_size']);
                 }
